@@ -1,0 +1,10 @@
+---
+# tasks file for install_nginx
+- name: Install nginx for server
+  package:
+    name: nginx
+    state: present
+
+- name: Copy config file for nginx
+  file:
+    

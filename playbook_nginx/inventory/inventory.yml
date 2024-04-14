@@ -1,0 +1,11 @@
+---
+
+prod_server:
+   hosts:
+      centos_prod:
+         ansible_host: 192.168.3.15
+
+test_server:
+   hosts:
+      centos_test:
+         ansible_host: 192.168.3.17
