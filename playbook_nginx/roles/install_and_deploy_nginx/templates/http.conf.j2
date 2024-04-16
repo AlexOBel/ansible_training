@@ -1,7 +1,7 @@
 server {
         listen {{ http_port_test | default(80) }};
         server_name {{ test_server_name | default("prod-online.ru") }};
-        return 301 https://$host$request_uri;
+        return 303 https://$host$request_uri;
 }
 
 server {
