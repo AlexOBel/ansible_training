@@ -1,9 +1,10 @@
 ---
 
 - name: install NGINX
+  hosts: all
   become: true
-  include_role:
-    name: install_and_deploy_nginx
+  roles:
+    - install_and_deploy_nginx
 
   vars:
     ssl_dir: /etc/nginx/ssl
