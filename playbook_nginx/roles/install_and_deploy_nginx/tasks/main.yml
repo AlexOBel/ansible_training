@@ -10,7 +10,6 @@
   service:
     name: nginx
     state: started
-    update_cache: yes
 
 - name: Copy main config file for nginx - nginx.conf
   template:
