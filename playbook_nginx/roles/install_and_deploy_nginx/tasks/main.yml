@@ -3,8 +3,41 @@
 - name: Install nginx for server
   package:
     name: nginx
-    state: present
+    state: latest
+    update_cache: yes
 
-- name: Copy config file for nginx
-  file:
+- name: Start nginx for servers
+  service:
+    name: nginx
+    state: started
+    update_cache: yes
+
+- name: Copy main config file for nginx - nginx.conf
+  template:
+    src: ../templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0744
+  notify: restart nginx
     
+- name: Copy config file for nginx - http.conf
+  template:
+    src: ../templates/http.conf.j2
+    dest: /etc/nginx/conf.d/http.conf
+    mode: 0744
+  notify: restart nginx
+
+- name: Create ssl dir
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+
+- name: Copy cert and key on hosts
+  copy:
+    src: "../files/{{ item }}"
+    dest: /etc/nginx/ssl/
+    with_items:
+      - example.crt
+      - example.key
+
+- name: restart nginx
+  meta: flush_handlers

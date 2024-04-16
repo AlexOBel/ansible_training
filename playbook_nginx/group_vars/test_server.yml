@@ -2,3 +2,9 @@
 
 ansible_user: centos
 ansible_ssh_private_key_file: /home/centos/.ssh/centos
+
+
+#переменные конфига Nginx блока Sever
+http_port_test: 9080
+https_port_test: 9443
+test_server_name: test.online.ru
