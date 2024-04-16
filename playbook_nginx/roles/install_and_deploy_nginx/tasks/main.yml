@@ -34,9 +34,10 @@
   copy:
     src: "../files/{{ item }}"
     dest: "{{ ssl_dir }}"
-    loop:
-      - example.crt
-      - example.key
+    with_items:
+          loop:
+          - example.crt
+          - example.key
 
 
 - name: restart nginx
