@@ -1,6 +1,6 @@
 ---
 # handlers file for install_nginx
-- name: Restart nginx
+- name: restart nginx
   become: true
   service:
     name: nginx
