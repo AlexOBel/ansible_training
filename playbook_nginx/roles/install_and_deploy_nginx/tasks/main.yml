@@ -37,7 +37,3 @@
   with_items:
     - example.crt
     - example.key
-
-
-- name: restart nginx
-  meta: flush_handlers

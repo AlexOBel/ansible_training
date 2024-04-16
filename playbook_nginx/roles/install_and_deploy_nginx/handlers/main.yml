@@ -2,6 +2,7 @@
 # handlers file for install_nginx
 - name: restart nginx
   become: true
+  run_once: true
   service:
     name: nginx
     state: restarted
