@@ -20,8 +20,8 @@ server {
         error_log   /var/log/nginx/site.example.com-error.log;
 
 #certs
-    ssl_certificate /etc/nginx/ssl/example.crt;
-    ssl_certificate_key /etc/nginx/ssl/example.key;
+    ssl_certificate {{ ssl_dir }}/example.crt;
+    ssl_certificate_key {{ ssl_dir }}/example.key;
 
      location / {
         proxy_set_header X-Forwarded-Host $host;

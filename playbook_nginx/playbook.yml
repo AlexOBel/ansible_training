@@ -1,0 +1,14 @@
+---
+- name: Install NGINX
+  hosts: all
+
+  vars:
+    ssl_dir: /etc/nginx/ssl
+
+  roles:
+    include_role:
+      name: install_and_deploy_nginx
+
+  tasks:
+    - name: msg for success deploy
+      msg: Nginx success deploy and configure

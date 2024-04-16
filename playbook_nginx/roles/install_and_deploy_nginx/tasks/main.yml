@@ -34,7 +34,7 @@
 - name: Copy cert and key on hosts
   copy:
     src: "../files/{{ item }}"
-    dest: /etc/nginx/ssl/
+    dest: {{ ssl_dir }}
     with_items:
       - example.crt
       - example.key
