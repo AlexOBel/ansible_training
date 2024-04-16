@@ -11,4 +11,5 @@
 
   tasks:
     - name: msg for success deploy
-      msg: Nginx success deploy and configure
+      debug:
+        msg: Nginx success deploy and configure
