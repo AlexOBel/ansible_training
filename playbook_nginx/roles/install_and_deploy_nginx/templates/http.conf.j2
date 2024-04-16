@@ -6,7 +6,7 @@ server {
 
 server {
     listen {{ http_port_test | default(443) }} ssl;
-    server_name {{ test_server_name | default(prod-online.ru) }};
+    server_name {{ test_server_name | default("prod-online.ru") }};
 
 # bufer size
     fastcgi_buffer_size 32k;
