@@ -5,7 +5,7 @@ server {
 }
 
 server {
-    listen {{ http_port_test | default(443) }} ssl;
+    listen {{ https_port_test | default(443) }} ssl;
     server_name {{ test_server_name | default("prod-online.ru") }};
 
 # bufer size
@@ -24,13 +24,6 @@ server {
     ssl_certificate_key {{ ssl_dir }}/example.key;
 
      location / {
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Server $host;
-       #proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header Host $http_host;
-        #proxy_set_header Host $host;
-        proxy_pass http://upstream-01;
         allow all;
    }
 }
