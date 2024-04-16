@@ -34,7 +34,7 @@
 - name: Copy cert and key on hosts
   copy:
     src: "../files/{{ item }}"
-    dest: {{ ssl_dir }}
+    dest: "{{ ssl_dir }}"
     with_items:
       - example.crt
       - example.key
