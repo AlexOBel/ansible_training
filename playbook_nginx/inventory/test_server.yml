@@ -1,0 +1,5 @@
+---
+test_server:
+   hosts:
+      centos_test:
+         ansible_host: 192.168.3.17
