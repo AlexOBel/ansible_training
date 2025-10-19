@@ -3,13 +3,7 @@
 - name: OFF SELinux from use 9080 port
   shell: 'setenforce 0'
 
-- name: enable 9080
-  firewalld:
-    port: 9080/tcp
-    permanent: true
-    state: enabled
-
-- name: enable 9443
+- name: enable ports
   firewalld:
     port: {{ item }}
     permanent: true
