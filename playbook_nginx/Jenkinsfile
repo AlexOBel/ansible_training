@@ -35,8 +35,8 @@ pipeline {
         stage('Validation') {
             steps {
                 sh '''
-                    ansible-playbook --syntax-check playbook.yml
-                    ansible-lint playbook.yml || true
+                    ansible-playbook --syntax-check ./ansible_training/playbook.yml
+                    ansible-lint ./playbook_nginx/playbook.yml || true
                 '''
             }
         }
@@ -44,8 +44,8 @@ pipeline {
         stage('Inventory Check') {
             steps {
                 sh """
-                    ansible-inventory -i inventory/${params.ENVIRONMENT} --list
-                    ansible-inventory -i inventory/${params.ENVIRONMENT} --graph
+                    ansible-inventory -i ./playbook_nginx/inventory/${params.ENVIRONMENT} --list
+                    ansible-inventory -i ./playbook_nginx/inventory/${params.ENVIRONMENT} --graph
                 """
             }
             when {
@@ -69,7 +69,7 @@ pipeline {
                                 -l ${params.TARGET_HOSTS} \
                                 --extra-vars "env=${params.ENVIRONMENT}" \
                                 ${params.RECONFIG_MODE ? '--check --diff' : ''} \
-                                playbook.yml
+                                ./playbook_nginx/playbook.yml
                         """
                     }
                 }
