@@ -5,6 +5,8 @@ pipeline {
         ansiColor('xterm')
     }
 
+    sleep 10
+
     parameters {
         choice(
             name: 'ENVIRONMENT',
