@@ -2,8 +2,10 @@
 
 - name: update system
   hosts: all
-  shell: 'yum update -y'
   become: true
+  tasks:
+    - name: Update packages with yum
+      shell: 'yum update -y'
 
 - name: install NGINX
   hosts: all
