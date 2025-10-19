@@ -35,7 +35,7 @@ pipeline {
         stage('Validation') {
             steps {
                 sh '''
-                    ansible-playbook --syntax-check ./ansible_training/playbook.yml
+                    ansible-playbook --syntax-check ./playbook_nginx/playbook.yml
                     ansible-lint ./playbook_nginx/playbook.yml || true
                 '''
             }
