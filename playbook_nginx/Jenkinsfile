@@ -5,8 +5,6 @@ pipeline {
         ansiColor('xterm')
     }
 
-    sleep 10
-
     parameters {
         choice(
             name: 'ENVIRONMENT',
@@ -32,6 +30,7 @@ pipeline {
 
     stages {
         stage('Checkout') {
+            sleep 10
             steps {
                 git branch: 'main',
                     url: 'https://github.com/AlexOBel/ansible_training.git',
