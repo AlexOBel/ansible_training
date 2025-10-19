@@ -50,25 +50,22 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                ansiColor('xterm') {
-                    script {
-                        withCredentials([
-                            sshUserPrivateKey(
-                                credentialsId: 'AnsibleUser',
-                                keyFileVariable: 'SSH_KEY_FILE'
-                            )
-                        ]) {
-                            sh """
-                                export ANSIBLE_PRIVATE_KEY_FILE=${SSH_KEY_FILE}
-                                ansible-playbook \
-                                    -i ./playbook_nginx/inventory/${params.ENVIRONMENT}.yml \
-                                    -l ${params.TARGET_HOSTS} \
-                                    --extra-vars "env=${params.ENVIRONMENT}" \
-                                    ${params.RECONFIG_MODE ? '--check --diff' : ''} \
-                                    --force-color \
-                                    ./playbook_nginx/playbook.yml
-                            """
-                        }
+                script {
+                    withCredentials([
+                        sshUserPrivateKey(
+                            credentialsId: 'AnsibleUser',
+                            keyFileVariable: 'SSH_KEY_FILE'
+                        )
+                    ]) {
+                        sh """
+                            export ANSIBLE_PRIVATE_KEY_FILE=${SSH_KEY_FILE}
+                            ansible-playbook \
+                                -i ./playbook_nginx/inventory/${params.ENVIRONMENT}.yml \
+                                -l ${params.TARGET_HOSTS} \
+                                --extra-vars "env=${params.ENVIRONMENT}" \
+                                ${params.RECONFIG_MODE ? '--check --diff' : ''} \
+                                ./playbook_nginx/playbook.yml
+                        """
                     }
                 }
             }
