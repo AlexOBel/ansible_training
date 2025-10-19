@@ -5,7 +5,7 @@
 
 - name: enable ports
   firewalld:
-    port: {{ item }}
+    port: "{{ item }}"
     permanent: true
     state: enabled
   loop:
