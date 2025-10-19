@@ -56,7 +56,7 @@ pipeline {
                         sh """
                             export ANSIBLE_PRIVATE_KEY_FILE=${SSH_KEY_FILE}
                             ansible-playbook \
-                                -i /playbook_nginx/inventory/${params.ENVIRONMENT}.yml \
+                                -i ./playbook_nginx/inventory/${params.ENVIRONMENT}.yml \
                                 -l ${params.TARGET_HOSTS} \
                                 --extra-vars "env=${params.ENVIRONMENT}" \
                                 ${params.RECONFIG_MODE ? '--check --diff' : ''} \
