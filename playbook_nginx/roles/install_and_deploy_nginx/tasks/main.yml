@@ -11,13 +11,14 @@
 
 - name: enable 9443
   firewalld:
-    port: 9443/tcp
+    port: {{ item }}
     permanent: true
     state: enabled
-
-- name: Reload firewalld
-  firewalld:
-    reload: yes
+  loop:
+    - 80/tcp
+    - 443/tcp
+    - 9080/tcp
+    - 9443/tcp
 
 - name: Install nginx for server
   package:
