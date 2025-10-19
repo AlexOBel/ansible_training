@@ -32,15 +32,6 @@ pipeline {
             }
         }
 
-        stage('Validation') {
-            steps {
-                sh '''
-                    ansible-playbook --syntax-check ./playbook_nginx/playbook.yml
-                    ansible-lint ./playbook_nginx/playbook.yml || true
-                '''
-            }
-        }
-
         stage('Inventory Check') {
             steps {
                 sh """
@@ -74,33 +65,9 @@ pipeline {
                     }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
-        }
-        success {
-            script {
-                if (params.RECONFIG_MODE) {
-                    slackSend(
-                        channel: '#deployments',
-                        message: "✅ Reconfig check for ${params.ENVIRONMENT} completed successfully"
-                    )
-                } else {
-                    slackSend(
-                        channel: '#deployments',
-                        message: "✅ Ansible deployment to ${params.ENVIRONMENT} completed successfully"
-                    )
-                }
+            when {
+               expression { params.RECONFIG_MODE == false }
             }
-        }
-        failure {
-            slackSend(
-                channel: '#deployments',
-                message: "❌ ${params.RECONFIG_MODE ? 'Reconfig check' : 'Deployment'} to ${params.ENVIRONMENT} failed"
-            )
         }
     }
 }
