@@ -25,6 +25,7 @@ pipeline {
 
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
+        ANSIBLE_FORCE_COLOR = 'true'
     }
 
     stages {
