@@ -4,7 +4,7 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['dev', 'staging', 'prod'],
+            choices: ['test_server', 'prod_server'],
             description: 'Выберите окружение для деплоя'
         )
         string(
@@ -22,15 +22,15 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://github.com/your-username/your-repo.git',
-                    credentialsId: 'github-credentials'
+                    url: 'https://github.com/AlexOBel/ansible_training.git',
+                    credentialsId: 'https_github_cred'
             }
         }
 
         stage('Ansible Syntax Check') {
             steps {
                 sh '''
-                    ansible-playbook --syntax-check site.yml
+                    ansible-playbook --syntax-check playbook.yml
                 '''
             }
         }
@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sh '''
                     # Опционально: проверка качества кода
-                    ansible-lint site.yml || true
+                    ansible-lint playbook.yml || true
                 '''
             }
         }
@@ -49,9 +49,8 @@ pipeline {
                 script {
                     withCredentials([
                         sshUserPrivateKey(
-                            credentialsId: 'ansible-ssh-key',
-                            keyFileVariable: 'SSH_KEY_FILE',
-                            usernameVariable: 'SSH_USERNAME'
+                            credentialsId: 'AnsibleUser',
+                            usernameVariable: 'ansible_user'
                         )
                     ]) {
                         sh """
@@ -60,7 +59,7 @@ pipeline {
                                 -i inventory/${params.ENVIRONMENT} \
                                 -l ${params.TARGET_HOSTS} \
                                 --extra-vars "env=${params.ENVIRONMENT}" \
-                                site.yml
+                                playbook.yml
                         """
                     }
                 }
