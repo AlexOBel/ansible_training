@@ -12,6 +12,11 @@ pipeline {
             defaultValue: 'all',
             description: 'Целевые хосты или группа из inventory'
         )
+        booleanParam(
+            name: 'RECONFIG_MODE',
+            defaultValue: false,
+            description: 'Только проверка конфигурации без запуска на хостах'
+        )
     }
 
     environment {
@@ -27,20 +32,24 @@ pipeline {
             }
         }
 
-        stage('Ansible Syntax Check') {
+        stage('Validation') {
             steps {
                 sh '''
                     ansible-playbook --syntax-check playbook.yml
+                    ansible-lint playbook.yml || true
                 '''
             }
         }
 
-        stage('Ansible Lint') {
+        stage('Inventory Check') {
             steps {
-                sh '''
-                    # Опционально: проверка качества кода
-                    ansible-lint playbook.yml || true
-                '''
+                sh """
+                    ansible-inventory -i inventory/${params.ENVIRONMENT} --list
+                    ansible-inventory -i inventory/${params.ENVIRONMENT} --graph
+                """
+            }
+            when {
+                expression { params.RECONFIG_MODE == true }
             }
         }
 
@@ -50,7 +59,7 @@ pipeline {
                     withCredentials([
                         sshUserPrivateKey(
                             credentialsId: 'AnsibleUser',
-                            usernameVariable: 'ansible_user'
+                            keyFileVariable: 'SSH_KEY_FILE'
                         )
                     ]) {
                         sh """
@@ -59,6 +68,7 @@ pipeline {
                                 -i inventory/${params.ENVIRONMENT} \
                                 -l ${params.TARGET_HOSTS} \
                                 --extra-vars "env=${params.ENVIRONMENT}" \
+                                ${params.RECONFIG_MODE ? '--check --diff' : ''} \
                                 playbook.yml
                         """
                     }
@@ -72,15 +82,24 @@ pipeline {
             cleanWs()
         }
         success {
-            slackSend(
-                channel: '#deployments',
-                message: "✅ Ansible deployment to ${params.ENVIRONMENT} completed successfully"
-            )
+            script {
+                if (params.RECONFIG_MODE) {
+                    slackSend(
+                        channel: '#deployments',
+                        message: "✅ Reconfig check for ${params.ENVIRONMENT} completed successfully"
+                    )
+                } else {
+                    slackSend(
+                        channel: '#deployments',
+                        message: "✅ Ansible deployment to ${params.ENVIRONMENT} completed successfully"
+                    )
+                }
+            }
         }
         failure {
             slackSend(
                 channel: '#deployments',
-                message: "❌ Ansible deployment to ${params.ENVIRONMENT} failed"
+                message: "❌ ${params.RECONFIG_MODE ? 'Reconfig check' : 'Deployment'} to ${params.ENVIRONMENT} failed"
             )
         }
     }
