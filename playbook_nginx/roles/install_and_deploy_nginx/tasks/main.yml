@@ -1,17 +1,7 @@
 ---
 # tasks file for install_nginx
-- name: Allow nginx to connect to custom ports
-  seboolean:
-    name: nis_enabled
-    state: true
-    persistent: yes
-
-- name: Set SELinux port context for custom ports
-  selinux_port:
-    ports: 9080,9443
-    proto: tcp
-    setype: http_port_t
-    state: present
+- name: OFF SELinux from use 9080 port
+  shell: 'setenforce 0'
 
 - name: enable 9080
   firewalld:
