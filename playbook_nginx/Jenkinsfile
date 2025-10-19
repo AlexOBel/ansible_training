@@ -30,8 +30,8 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            sleep 10
             steps {
+                sleep 10
                 git branch: 'main',
                     url: 'https://github.com/AlexOBel/ansible_training.git',
                     credentialsId: 'https_github_cred'
