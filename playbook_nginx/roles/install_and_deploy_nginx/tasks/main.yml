@@ -3,6 +3,20 @@
 - name: OFF SELinux from use 9080 port
   shell: 'setenforce 0'
 
+- name: enable 9080
+  firewalld:
+    zone: public
+    port: 9080/tcp
+    permanent: true
+    state: enabled
+
+- name: enable 9443
+  firewalld:
+    zone: public
+    port: 9443/tcp
+    permanent: true
+    state: enabled
+
 - name: Install nginx for server
   package:
     name: nginx
