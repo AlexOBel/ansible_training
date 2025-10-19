@@ -1,5 +1,8 @@
 ---
 # tasks file for install_nginx
+- name: OFF SELinux from use 9080 port
+  shell: 'setenforce 0'
+
 - name: Install nginx for server
   package:
     name: nginx
