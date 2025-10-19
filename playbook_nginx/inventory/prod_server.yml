@@ -1,6 +1,6 @@
----
-prod_server:
-   hosts:
-      centos_prod:
-         ansible_host: 192.168.3.48
-
+all:
+   children:
+      prod_server:
+         hosts:
+            centos_prod:
+               ansible_host: 192.168.3.48
