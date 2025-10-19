@@ -2,5 +2,5 @@
 prod_server:
    hosts:
       centos_prod:
-         ansible_host: 192.168.3.15
+         ansible_host: 192.168.3.48
 
