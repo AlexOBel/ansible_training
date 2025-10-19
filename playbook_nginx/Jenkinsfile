@@ -64,6 +64,7 @@ pipeline {
                                     -i ./playbook_nginx/inventory/${params.ENVIRONMENT}.yml \
                                     -l ${params.TARGET_HOSTS} \
                                     --extra-vars "env=${params.ENVIRONMENT}" \
+                                    --force-color \
                                     ${params.RECONFIG_MODE ? '--check --diff' : ''} \
                                     ./playbook_nginx/playbook.yml
                             """
