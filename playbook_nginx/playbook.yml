@@ -53,7 +53,7 @@
     - name: Configuration Server parameters
       replace:
         path: /etc/zabbix/zabbix_agentd.conf
-        regexp: "Hostname=Zabbix server"
+        regexp: "^Hostname=.+"
         replace: "Hostname={{ inventory_hostname }}"
 
     - name: Start and enable Zabbix agent
