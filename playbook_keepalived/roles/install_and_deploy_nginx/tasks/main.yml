@@ -1,0 +1,63 @@
+---
+# tasks file for install_nginx
+- name: OFF SELinux from use 9080 port
+  shell: 'setenforce 0'
+
+- name: enable ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: true
+    state: enabled
+  loop:
+    - 80/tcp
+    - 443/tcp
+    - 9080/tcp
+    - 9443/tcp
+    - 10050/tcp
+    - 10051/tcp
+  notify: reload firewall
+
+- name: Install nginx for server
+  package:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Start nginx for servers
+  service:
+    name: nginx
+    state: started
+
+- name: Copy main config file for nginx - nginx.conf
+  template:
+    src: ../templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    mode: 0744
+  notify: restart nginx
+    
+- name: Copy config file for nginx - http.conf
+  template:
+    src: ../templates/http.conf.j2
+    dest: /etc/nginx/conf.d/http.conf
+    mode: 0744
+  notify: restart nginx
+
+- name: Copy config file for nginx - stub_status.conf
+  template:
+    src: ../templates/stub_status.conf.j2
+    dest: /etc/nginx/conf.d/stub_status.conf
+    mode: 0744
+  notify: restart nginx
+
+- name: Create ssl dir
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+
+- name: Copy cert and key on hosts
+  copy:
+    src: "../files/{{ item }}"
+    dest: "{{ ssl_dir }}"
+  with_items:
+    - example.crt
+    - example.key

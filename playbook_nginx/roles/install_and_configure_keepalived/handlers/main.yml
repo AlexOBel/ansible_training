@@ -1,0 +1,16 @@
+---
+# handlers file for install_nginx
+- name: start keepalived
+  become: true
+  run_once: true
+  service:
+    name: keepalived
+    state: started
+    enabled: yes
+
+- name: restart keepalived
+  become: true
+  run_once: true
+  service:
+    name: keepalived
+    state: restarted

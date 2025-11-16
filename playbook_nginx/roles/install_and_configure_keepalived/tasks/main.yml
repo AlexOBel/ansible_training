@@ -1,0 +1,30 @@
+---
+# tasks file for setup keepalived
+- name: Install keepalived for server
+  package:
+    name: keepalived
+    state: latest
+    update_cache: yes
+  notify: start keepalived
+
+- name: Copy main config file for keepalived
+  template:
+    src: ../templates/keepalived.conf.j2
+    dest: /etc/nginx/keepalived.conf
+    mode: 0744
+  notify: restart keepalived
+
+- name: Copy notify script for keepalived
+  copy:
+    src: ../templates/notify.sh
+    dest: /etc/nginx/notify.sh
+    mode: 0755
+  notify: restart keepalived
+
+- name: Enable IP forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    state: present
+    reload: yes
+  become: yes

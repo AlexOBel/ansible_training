@@ -1,0 +1,63 @@
+---
+
+- name: update system
+  hosts: all
+  become: true
+  tasks:
+    - name: Update packages with yum
+      shell: 'yum update -y'
+
+- name: install NGINX
+  hosts: all
+  become: true
+  roles:
+    - install_and_deploy_nginx
+
+  vars:
+    ssl_dir: /etc/nginx/ssl
+
+- name: Install Zabbix agent - temporary GPG fix
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Disable GPG check temporarily in dnf config
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        line: "gpgcheck=0"
+        create: yes
+
+    - name: Install Zabbix repository
+      ansible.builtin.package:
+        name: https://repo.zabbix.com/zabbix/7.0/rhel/9/x86_64/zabbix-release-7.0-1.el9.noarch.rpm
+        state: present
+
+
+    - name: Install Zabbix agent
+      ansible.builtin.package:
+        name: zabbix-agent
+        state: present
+
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "Server=127.0.0.1"
+        replace: "Server={{ zabbix_server }}"
+
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "ServerActive=127.0.0.1"
+        replace: "ServerActive={{ zabbix_server }}"
+
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "^Hostname=.+"
+        replace: "Hostname={{ inventory_hostname }}"
+
+    - name: Start and enable Zabbix agent
+      ansible.builtin.systemd:
+        name: zabbix-agent
+        state: started
+        enabled: yes

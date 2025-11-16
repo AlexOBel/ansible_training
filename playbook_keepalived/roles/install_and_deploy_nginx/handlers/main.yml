@@ -1,0 +1,12 @@
+---
+# handlers file for install_nginx
+- name: restart nginx
+  become: true
+  run_once: true
+  service:
+    name: nginx
+    state: restarted
+
+- name: reload firewall
+  command: firewall-cmd --reload
+  listen: "firewall reload"

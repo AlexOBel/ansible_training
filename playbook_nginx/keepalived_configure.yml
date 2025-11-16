@@ -1,0 +1,12 @@
+- name: update system
+  hosts: all
+  become: true
+  tasks:
+    - name: Update packages with yum
+      shell: 'yum update -y'
+
+- name: install keepalived
+  hosts: all
+  become: true
+  roles:
+    - install_and_configure_keepalived

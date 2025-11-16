@@ -11,11 +11,6 @@ pipeline {
             choices: ['test_server', 'prod_server', 'loadbalancers'],
             description: 'Выберите окружение для деплоя'
         )
-        choice(
-            name: 'PLAYBOOK'
-            choices: ['setup_nginx', 'keepalived_configure']
-            description: 'Выберите плейбук для выполнения'
-        )
         string(
             name: 'TARGET_HOSTS',
             defaultValue: 'all',
@@ -71,7 +66,7 @@ pipeline {
                                 -l ${params.TARGET_HOSTS} \
                                 --extra-vars "env=${params.ENVIRONMENT}" \
                                 ${params.RECONFIG_MODE ? '--check --diff' : ''} \
-                                ./playbook_nginx/${params.PLAYBOOK}.yml
+                                ./playbook_nginx/playbook.yml
                         """
                     }
                 }
