@@ -12,8 +12,8 @@ pipeline {
             description: 'Выберите окружение для деплоя'
         )
         choice(
-            name: 'PLAYBOOK'
-            choices: ['setup_nginx', 'keepalived_configure']
+            name: 'PLAYBOOK',
+            choices: ['setup_nginx', 'keepalived_configure'],
             description: 'Выберите плейбук для выполнения'
         )
         string(
