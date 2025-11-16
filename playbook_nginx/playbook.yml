@@ -54,7 +54,7 @@
       replace:
         path: /etc/zabbix/zabbix_agentd.conf
         regexp: "Hostname=Zabbix server"
-        replace: "Hostname={{ ansible_host }}"
+        replace: "Hostname={{ inventory_hostname }}"
 
     - name: Start and enable Zabbix agent
       ansible.builtin.systemd:
