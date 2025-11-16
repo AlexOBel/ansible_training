@@ -1,6 +1,11 @@
+upstream static_servers {
+    server localhost:8343;
+    server localhost:8344;
+}
+
 server {
-        listen {{ http_port }};
-        server_name {{ test_server_name | default("prod-online.ru") }};
+    listen {{ http_port }};
+    server_name {{ test_server_name | default("prod-online.ru") }};
 }
 
 server {
@@ -23,6 +28,30 @@ server {
     ssl_certificate_key {{ ssl_dir }}/example.key;
 
      location / {
+        proxy_pass http:static_servers;
         allow all;
    }
+}
+
+
+server {
+    listen 8343;
+    server_name static-1;
+
+    location / {
+        add_header Content-Type application/json;
+        return 200 '{"message": "Hello, I`m {{ inventory_hostname }}!", "static_server": "1 - success"}';
+    }
+
+}
+
+server {
+    listen 8344;
+    server_name static-2;
+
+    location / {
+        add_header Content-Type application/json;
+        return 200 '{"message": "Hello, I`m {{ inventory_hostname }}!", "static_server": "2 - success"}';
+    }
+
 }
