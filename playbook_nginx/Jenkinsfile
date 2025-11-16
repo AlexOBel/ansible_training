@@ -8,7 +8,7 @@ pipeline {
     parameters {
         choice(
             name: 'ENVIRONMENT',
-            choices: ['test_server', 'prod_server'],
+            choices: ['test_server', 'prod_server', 'loadbalancers'],
             description: 'Выберите окружение для деплоя'
         )
         string(
@@ -70,9 +70,6 @@ pipeline {
                         """
                     }
                 }
-            }
-            when {
-               expression { params.RECONFIG_MODE == false }
             }
         }
     }
