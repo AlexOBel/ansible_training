@@ -4,3 +4,4 @@ ansible_user: centos
 http_port: 9080
 https_port: 9443
 monitor_port: 80
+zabbix_server: 192.168.3.49

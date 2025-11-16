@@ -38,6 +38,24 @@
         name: zabbix-agent
         state: present
 
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "Server=127.0.0.1"
+        replace: "Server={{ zabbix_server }}"
+
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "ServerActive=127.0.0.1"
+        replace: "ServerActive={{ zabbix_server }}"
+
+    - name: Configuration Server parameters
+      replace:
+        path: /etc/zabbix/zabbix_agentd.conf
+        regexp: "Hostname=Zabbix server"
+        replace: "Hostname={{ ansible_host }}"
+
     - name: Start and enable Zabbix agent
       ansible.builtin.systemd:
         name: zabbix-agent
