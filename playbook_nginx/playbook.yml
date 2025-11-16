@@ -16,29 +16,29 @@
   vars:
     ssl_dir: /etc/nginx/ssl
 
-- name: Install Zabbix agent using shell commands
+- name: Install Zabbix agent - temporary GPG fix
   hosts: all
   become: yes
 
   tasks:
-    - name: Install Zabbix repository (skip GPG check)
-      ansible.builtin.shell:
-        cmd: "rpm -Uvh https://repo.zabbix.com/zabbix/7.0/rhel/9/x86_64/zabbix-release-7.0-1.el9.noarch.rpm"
+    - name: Disable GPG check temporarily in dnf config
+      ansible.builtin.lineinfile:
+        path: /etc/dnf/dnf.conf
+        line: "gpgcheck=0"
+        create: yes
 
-    - name: Import Zabbix GPG key
-      ansible.builtin.shell:
-        cmd: "rpm --import https://repo.zabbix.com/zabbix-official-repo.key"
+    - name: Install Zabbix repository
+      ansible.builtin.package:
+        name: https://repo.zabbix.com/zabbix/7.0/rhel/9/x86_64/zabbix-release-7.0-1.el9.noarch.rpm
+        state: present
 
-    - name: Clean dnf cache
-      ansible.builtin.shell:
-        cmd: "dnf clean all"
 
     - name: Install Zabbix agent
       ansible.builtin.package:
         name: zabbix-agent
         state: present
 
-    - name: Start and enable Zabbix agent service
+    - name: Start and enable Zabbix agent
       ansible.builtin.systemd:
         name: zabbix-agent
         state: started
