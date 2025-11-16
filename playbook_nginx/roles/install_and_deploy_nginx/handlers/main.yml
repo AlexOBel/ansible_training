@@ -6,3 +6,7 @@
   service:
     name: nginx
     state: restarted
+
+- name: reload firewall
+  command: firewall-cmd --reload
+  listen: "firewall reload"
