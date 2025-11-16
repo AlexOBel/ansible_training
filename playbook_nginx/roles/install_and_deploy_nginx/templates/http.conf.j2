@@ -28,7 +28,7 @@ server {
     ssl_certificate_key {{ ssl_dir }}/example.key;
 
      location /proxy_static {
-        proxy_pass http:static_servers;
+        proxy_pass http://static_servers;
         allow all;
    }
 }
