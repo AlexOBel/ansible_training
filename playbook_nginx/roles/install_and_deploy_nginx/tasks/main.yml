@@ -13,6 +13,7 @@
     - 443/tcp
     - 9080/tcp
     - 9443/tcp
+    - 10050/tcp
 
 - name: Install nginx for server
   package:
