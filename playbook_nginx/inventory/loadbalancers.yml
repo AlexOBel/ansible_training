@@ -1,0 +1,8 @@
+all:
+   children:
+      loadbalancers:
+         hosts:
+            lb_1:
+               ansible_host: 192.168.3.55
+            lb_2:
+               ansible_host: 192.168.3.56

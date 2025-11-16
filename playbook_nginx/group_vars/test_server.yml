@@ -3,6 +3,7 @@
 ansible_user: centos
 
 #переменные конфига Nginx блока Sever
-http_port_test: 9080
-https_port_test: 9443
+http_port: 9080
+https_port: 9443
+monitor_port: 80
 test_server_name: test.online.ru

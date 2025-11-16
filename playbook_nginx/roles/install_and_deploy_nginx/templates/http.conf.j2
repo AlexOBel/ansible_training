@@ -1,10 +1,10 @@
 server {
-        listen {{ http_port_test | default(80) }};
+        listen {{ http_port }};
         server_name {{ test_server_name | default("prod-online.ru") }};
 }
 
 server {
-    listen {{ https_port_test | default(443) }} ssl;
+    listen {{ https_port }} ssl;
     server_name {{ test_server_name | default("prod-online.ru") }};
 
 # bufer size

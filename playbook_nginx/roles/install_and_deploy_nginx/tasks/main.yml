@@ -39,6 +39,13 @@
     mode: 0744
   notify: restart nginx
 
+- name: Copy config file for nginx - stub_status.conf
+  template:
+    src: ../templates/stub_status.conf.j2
+    dest: /etc/nginx/conf.d/stub_status.conf
+    mode: 0744
+  notify: restart nginx
+
 - name: Create ssl dir
   file:
     path: /etc/nginx/ssl
