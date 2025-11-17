@@ -10,14 +10,14 @@
 - name: Copy main config file for keepalived
   template:
     src: ../templates/keepalived.conf.j2
-    dest: /etc/nginx/keepalived.conf
+    dest: /etc/keepalived/keepalived.conf
     mode: 0744
   notify: restart keepalived
 
 - name: Copy notify script for keepalived
   copy:
     src: ../templates/notify.sh
-    dest: /etc/nginx/notify.sh
+    dest: /etc/keepalived/notify.sh
     mode: 0755
   notify: restart keepalived
 
