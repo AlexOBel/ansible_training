@@ -11,7 +11,7 @@
   template:
     src: ../templates/keepalived.conf.j2
     dest: /etc/keepalived/keepalived.conf
-    mode: 0744
+    mode: 0644
   notify: restart keepalived
 
 - name: Copy notify script for keepalived
