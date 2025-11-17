@@ -10,6 +10,17 @@ vrrp_instance VI_1 {
     virtual_router_id 51                # ID виртуального маршрутизатора (должен быть одинаковым на обоих серверах)
     priority {% if status == 'MASTER' %}101{% else %}100{% endif %}       # приоритет MASTER (должен быть выше чем у BACKUP)
     advert_int 1                        # интервал объявлений
+{% if status == 'MASTER' %}
+    unicast_src_ip {{ hostvars['lb_1']['ansible_host'] }}    # IP MASTER сервера
+    unicast_peer {
+        {{ hostvars['lb_2']['ansible_host'] }}               # IP BACKUP сервера
+    }
+{% else %}
+    unicast_src_ip {{ hostvars['lb_2']['ansible_host'] }}    # IP MASTER сервера
+    unicast_peer {
+        {{ hostvars['lb_1']['ansible_host'] }}               # IP BACKUP сервера
+    }
+{% endif %}
 
     authentication {
         auth_type PASS
