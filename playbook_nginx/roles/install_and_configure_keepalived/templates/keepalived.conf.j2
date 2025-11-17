@@ -16,9 +16,9 @@ vrrp_instance VI_1 {
         {{ hostvars['lb_2']['ansible_host'] }}               # IP BACKUP сервера
     }
 {% else %}
-    unicast_src_ip {{ hostvars['lb_2']['ansible_host'] }}    # IP MASTER сервера
+    unicast_src_ip {{ hostvars['lb_2']['ansible_host'] }}    # IP BACKUP сервера
     unicast_peer {
-        {{ hostvars['lb_1']['ansible_host'] }}               # IP BACKUP сервера
+        {{ hostvars['lb_1']['ansible_host'] }}               # IP MASTER сервера
     }
 {% endif %}
 
